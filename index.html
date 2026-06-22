@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Butler County Nebraska Democrats: Fair Volunteer Signup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FDFDFE;
+    --navy:#0A2A5E;
+    --navy-light:#1F4E96;
+    --gold:#B22234;
+    --red:#B22234;
+    --green:#2E7D4F;
+    --line:#C9D2E0;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--cream);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cpath fill='%230A2A5E' fill-opacity='0.10' d='M14 3.5l2.5 5.6 6.1.6-4.6 4.1 1.3 6-5.3-3.2-5.3 3.2 1.3-6-4.6-4.1 6.1-.6z'/%3E%3C/svg%3E");
+    background-size: 28px 28px;
+    color:var(--navy);
+    font-family:'Inter',sans-serif;
+    padding:0 0 80px;
+  }
+  header{
+    text-align:center;
+    padding:48px 20px 28px;
+  }
+  header .eyebrow{
+    font-size:12px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--red);
+    font-weight:700;
+    margin-bottom:10px;
+  }
+  header h1{
+    font-family:'Alfa Slab One',serif;
+    font-size:clamp(28px,6vw,46px);
+    color:var(--navy);
+    margin:0 0 8px;
+    line-height:1.1;
+    text-shadow: 2px 2px 0 rgba(178,34,52,0.2);
+  }
+  header p{
+    margin:0;
+    font-size:15px;
+    color:var(--navy-light);
+    max-width:480px;
+    margin:0 auto;
+  }
+  .day{
+    max-width:680px;
+    margin:0 auto 36px;
+    padding:0 20px;
+  }
+  .day-title{
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+    margin-bottom:14px;
+    border-bottom:2px solid var(--navy);
+    padding-bottom:6px;
+  }
+  .day-title h2{
+    font-family:'Alfa Slab One',serif;
+    font-size:22px;
+    margin:0;
+    color:var(--navy);
+  }
+  .day-title span{
+    font-size:13px;
+    color:var(--gold);
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+  }
+  .ticket{
+    position:relative;
+    display:flex;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:10px;
+    margin-bottom:14px;
+    overflow:hidden;
+    box-shadow:0 2px 0 rgba(10,42,94,0.08);
+  }
+  .ticket-main{
+    flex:1;
+    padding:16px 18px;
+  }
+  .ticket-time{
+    font-weight:700;
+    font-size:16px;
+    color:var(--navy);
+  }
+  .ticket-status{
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    margin-top:2px;
+  }
+  .status-open{color:var(--red);}
+  .status-full{color:var(--red);}
+  .names{
+    margin-top:10px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+  }
+  .name-chip{
+    background:var(--cream);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:4px 10px 4px 10px;
+    font-size:13px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .name-chip button{
+    background:none;
+    border:none;
+    color:var(--red);
+    cursor:pointer;
+    font-size:13px;
+    font-weight:700;
+    padding:0;
+    line-height:1;
+  }
+  .signup-row{
+    margin-top:12px;
+    display:flex;
+    gap:8px;
+  }
+  .signup-row input{
+    flex:1;
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:8px 10px;
+    font-size:14px;
+    font-family:'Inter',sans-serif;
+  }
+  .signup-row input:focus{outline:2px solid var(--navy-light);outline-offset:1px;}
+  .signup-row button{
+    background:var(--red);
+    color:#fff;
+    border:none;
+    border-radius:6px;
+    padding:8px 16px;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .signup-row button:disabled{
+    background:#aaa;
+    cursor:not-allowed;
+  }
+  .error-banner{
+    max-width:680px;
+    margin:0 auto 20px;
+    padding:12px 16px;
+    background:#FBE6E6;
+    border:1px solid var(--red);
+    color:var(--red);
+    border-radius:8px;
+    font-size:14px;
+    font-weight:600;
+    text-align:center;
+  }
+  .calendar-confirm{
+    margin-top:12px;
+    padding:12px;
+    background:#F2F6FC;
+    border:1px solid var(--navy-light);
+    border-radius:8px;
+  }
+  .calendar-confirm-title{
+    font-size:13px;
+    font-weight:600;
+    color:var(--navy);
+    margin-bottom:8px;
+  }
+  .calendar-confirm-buttons{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .cal-btn{
+    background:var(--navy);
+    color:#fff;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:600;
+    padding:7px 12px;
+    border-radius:6px;
+    display:inline-block;
+  }
+  .cal-btn:hover{ background:var(--navy-light); }
+  .cal-dismiss{
+    margin-top:10px;
+    background:none;
+    border:none;
+    color:var(--navy-light);
+    font-size:12px;
+    text-decoration:underline;
+    cursor:pointer;
+    padding:0;
+    display:block;
+  }
+  .ticket-stub{
+    width:64px;
+    background:var(--navy);
+    background-image: repeating-linear-gradient(135deg, rgba(255,255,255,0.06) 0 6px, transparent 6px 12px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-left:2px dashed var(--cream);
+  }
+  .ticket-stub span{
+    color:#FFFFFF;
+    font-family:'Inter',sans-serif;
+    font-weight:700;
+    font-size:11px;
+    white-space:nowrap;
+    letter-spacing:0.04em;
+    transform:rotate(-90deg);
+    display:inline-block;
+  }
+  .perforation{
+    position:absolute;
+    left:64px;
+    top:0;
+    bottom:0;
+    width:0;
+  }
+  footer{
+    text-align:center;
+    font-size:12px;
+    color:var(--navy-light);
+    margin-top:40px;
+  }
+  .loading{
+    text-align:center;
+    padding:40px;
+    color:var(--navy-light);
+  }
+  @media (max-width:480px){
+    .ticket-stub{width:40px;}
+    .ticket-stub span{font-size:10px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Booth Crew Wanted</div>
+  <h1>Butler County NE Democrats<br>Fair Volunteer Signup</h1>
+  <p>Tap a shift below, add your name, and you're on the schedule. Everyone sees updates instantly.</p>
+</header>
+
+<div id="app" class="loading">Loading shifts…</div>
+
+<footer>Each shift fits 2 volunteers · Tap the × next to your name to remove yourself</footer>
+
+<script>
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxG9cbIQzYbyyqwir_VBQDQD9Ul0PZ_SxMEBbwwMFWCeKtFd4btZzsnHFbunHglGCwV/exec";
+const CAPACITY = 2;
+
+const schedule = [
+  { date: "Thursday, July 16", slots: [
+    { id: "thu-1", time: "11:00 AM – 2:30 PM", start: "20260716T160000Z", end: "20260716T193000Z" },
+    { id: "thu-2", time: "2:30 PM – 6:00 PM", start: "20260716T193000Z", end: "20260716T230000Z" },
+  ]},
+  { date: "Friday, July 17", slots: [
+    { id: "fri-1", time: "10:00 AM – 1:00 PM", start: "20260717T150000Z", end: "20260717T180000Z" },
+    { id: "fri-2", time: "1:00 PM – 4:00 PM", start: "20260717T180000Z", end: "20260717T210000Z" },
+    { id: "fri-3", time: "4:00 PM – 8:00 PM", start: "20260717T210000Z", end: "20260718T010000Z" },
+  ]},
+  { date: "Saturday, July 18", slots: [
+    { id: "sat-1", time: "10:00 AM – 1:00 PM", start: "20260718T150000Z", end: "20260718T180000Z" },
+    { id: "sat-2", time: "1:00 PM – 4:00 PM", start: "20260718T180000Z", end: "20260718T210000Z" },
+    { id: "sat-3", time: "4:00 PM – 8:00 PM", start: "20260718T210000Z", end: "20260719T010000Z" },
+  ]},
+  { date: "Sunday, July 19", slots: [
+    { id: "sun-1", time: "10:00 AM – 1:00 PM", start: "20260719T150000Z", end: "20260719T180000Z" },
+    { id: "sun-2", time: "1:00 PM – 4:00 PM", start: "20260719T180000Z", end: "20260719T210000Z" },
+  ]},
+];
+
+const EVENT_LOCATION = "Butler County Fairgrounds, David City, NE";
+const EVENT_TITLE = "Butler County NE Democrats — Fair Booth Volunteer Shift";
+
+function googleCalendarUrl(slot, dayLabel) {
+  const details = `Volunteer shift at the Butler County NE Democrats fair booth. Thanks for helping out!`;
+  const params = new URLSearchParams({
+    action: "TEMPLATE",
+    text: EVENT_TITLE,
+    dates: `${slot.start}/${slot.end}`,
+    details: details,
+    location: EVENT_LOCATION,
+  });
+  return `https://calendar.google.com/calendar/render?${params.toString()}`;
+}
+
+function icsDataUrl(slot) {
+  const ics = [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//Butler County NE Democrats//Fair Signup//EN",
+    "BEGIN:VEVENT",
+    `UID:${slot.id}-${Date.now()}@fair-signup`,
+    `DTSTAMP:${slot.start}`,
+    `DTSTART:${slot.start}`,
+    `DTEND:${slot.end}`,
+    `SUMMARY:${EVENT_TITLE}`,
+    `LOCATION:${EVENT_LOCATION}`,
+    "DESCRIPTION:Volunteer shift at the Butler County NE Democrats fair booth. Thanks for helping out!",
+    "END:VEVENT",
+    "END:VCALENDAR",
+  ].join("\r\n");
+  return "data:text/calendar;charset=utf8," + encodeURIComponent(ics);
+}
+
+let signups = {};
+let justSignedUp = null;
+let saveError = null;
+
+async function loadSignups() {
+  try {
+    const res = await fetch(`${APPS_SCRIPT_URL}?action=list`);
+    const json = await res.json();
+    signups = (json && json.signups) ? json.signups : {};
+  } catch (e) {
+    console.error('Could not load signups', e);
+    signups = {};
+    saveError = "Couldn't load the current schedule — check your connection and refresh.";
+  }
+}
+
+async function addSignup(slotId, name) {
+  try {
+    const res = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'add', slotId, name }),
+    });
+    const json = await res.json();
+    if (!json.ok) {
+      saveError = json.error === 'Slot is full'
+        ? "That shift just filled up — pick another one."
+        : "Couldn't save your signup — please try again.";
+      return false;
+    }
+    saveError = null;
+    return true;
+  } catch (e) {
+    console.error('Add signup failed', e);
+    saveError = "Couldn't save your signup — check your connection and try again.";
+    return false;
+  }
+}
+
+async function removeSignupRequest(slotId, name) {
+  try {
+    const res = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'remove', slotId, name }),
+    });
+    const json = await res.json();
+    if (!json.ok) {
+      saveError = "Couldn't remove that signup — please try again.";
+      return false;
+    }
+    saveError = null;
+    return true;
+  } catch (e) {
+    console.error('Remove signup failed', e);
+    saveError = "Couldn't remove that signup — check your connection and try again.";
+    return false;
+  }
+}
+
+function render() {
+  const app = document.getElementById('app');
+  app.classList.remove('loading');
+  app.innerHTML = '';
+
+  if (saveError) {
+    const banner = document.createElement('div');
+    banner.className = 'error-banner';
+    banner.textContent = saveError;
+    app.appendChild(banner);
+  }
+
+  schedule.forEach(day => {
+    const dayDiv = document.createElement('div');
+    dayDiv.className = 'day';
+
+    const titleDiv = document.createElement('div');
+    titleDiv.className = 'day-title';
+    titleDiv.innerHTML = `<h2>${day.date}</h2>`;
+    dayDiv.appendChild(titleDiv);
+
+    day.slots.forEach(slot => {
+      const names = signups[slot.id] || [];
+      const isFull = names.length >= CAPACITY;
+
+      const ticket = document.createElement('div');
+      ticket.className = 'ticket';
+
+      const main = document.createElement('div');
+      main.className = 'ticket-main';
+
+      main.innerHTML = `
+        <div class="ticket-time">${slot.time}</div>
+        <div class="ticket-status ${isFull ? 'status-full' : 'status-open'}">
+          ${isFull ? 'Full' : `${CAPACITY - names.length} spot${CAPACITY - names.length === 1 ? '' : 's'} open`}
+        </div>
+      `;
+
+      const namesDiv = document.createElement('div');
+      namesDiv.className = 'names';
+      names.forEach((name, idx) => {
+        const chip = document.createElement('div');
+        chip.className = 'name-chip';
+        chip.innerHTML = `<span>${escapeHtml(name)}</span>`;
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = '×';
+        removeBtn.title = 'Remove';
+        removeBtn.onclick = async () => {
+          const removed = signups[slot.id].splice(idx, 1)[0];
+          const ok = await removeSignupRequest(slot.id, removed);
+          if (!ok) signups[slot.id].splice(idx, 0, removed);
+          render();
+        };
+        chip.appendChild(removeBtn);
+        namesDiv.appendChild(chip);
+      });
+      main.appendChild(namesDiv);
+
+      if (!isFull) {
+        const row = document.createElement('div');
+        row.className = 'signup-row';
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.placeholder = 'Your name';
+        input.maxLength = 40;
+        const btn = document.createElement('button');
+        btn.textContent = 'Sign up';
+        const doSignup = async () => {
+          const name = input.value.trim();
+          if (!name) return;
+          if (!signups[slot.id]) signups[slot.id] = [];
+          if (signups[slot.id].length >= CAPACITY) return;
+          btn.disabled = true;
+          btn.textContent = 'Saving…';
+          const ok = await addSignup(slot.id, name);
+          if (ok) {
+            signups[slot.id].push(name);
+            justSignedUp = slot.id;
+          }
+          render();
+        };
+        btn.onclick = doSignup;
+        input.addEventListener('keydown', e => { if (e.key === 'Enter') doSignup(); });
+        row.appendChild(input);
+        row.appendChild(btn);
+        main.appendChild(row);
+      }
+
+      if (justSignedUp === slot.id) {
+        const confirm = document.createElement('div');
+        confirm.className = 'calendar-confirm';
+        confirm.innerHTML = `
+          <div class="calendar-confirm-title">You're on the schedule! Add it to your calendar:</div>
+          <div class="calendar-confirm-buttons">
+            <a class="cal-btn" target="_blank" rel="noopener" href="${googleCalendarUrl(slot)}">Google Calendar</a>
+            <a class="cal-btn" download="fair-volunteer-shift.ics" href="${icsDataUrl(slot)}">Apple / Outlook (.ics)</a>
+          </div>
+        `;
+        const dismiss = document.createElement('button');
+        dismiss.className = 'cal-dismiss';
+        dismiss.textContent = 'Done';
+        dismiss.onclick = () => { justSignedUp = null; render(); };
+        confirm.appendChild(dismiss);
+        main.appendChild(confirm);
+      }
+
+      ticket.appendChild(main);
+
+      const stub = document.createElement('div');
+      stub.className = 'ticket-stub';
+      stub.innerHTML = `<span>VOLUNTEER ${names.length}/${CAPACITY}</span>`;
+      ticket.appendChild(stub);
+
+      dayDiv.appendChild(ticket);
+    });
+
+    app.appendChild(dayDiv);
+  });
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+async function init() {
+  await loadSignups();
+  render();
+}
+
+init();
+</script>
+
+</body>
+</html>
