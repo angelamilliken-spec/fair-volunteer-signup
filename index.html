@@ -258,16 +258,21 @@
 </style>
 </head>
 <body>
+
 <header>
   <div class="eyebrow">Booth Crew Wanted</div>
   <h1>Butler County NE Democrats<br>Fair Volunteer Sign Up</h1>
   <p>Tap a shift below, add your name, and you're on the schedule. Everyone sees updates instantly.</p>
 </header>
+
 <div id="app" class="loading">Loading shifts…</div>
+
 <footer>Each shift fits 2 volunteers · Tap the × next to your name to remove yourself</footer>
+
 <script>
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxG9cbIQzYbyyqwir_VBQDQD9Ul0PZ_SxMEBbwwMFWCeKtFd4btZzsnHFbunHglGCwV/exec";
 const CAPACITY = 2;
+
 const schedule = [
   { date: "Thursday, July 16", slots: [
     { id: "thu-1", time: "11:00 AM – 2:30 PM", start: "20260716T160000Z", end: "20260716T193000Z" },
@@ -288,43 +293,48 @@ const schedule = [
     { id: "sun-2", time: "1:00 PM – 4:00 PM", start: "20260719T180000Z", end: "20260719T210000Z" },
   ]},
 ];
+
 const EVENT_LOCATION = "Butler County Fairgrounds, David City, NE";
 const EVENT_TITLE = "Butler County NE Democrats — Fair Booth Volunteer Shift";
-function googleCalendarUrl(slot) {
-  const details = "Volunteer shift at the Butler County NE Democrats fair booth. Thanks for helping out!";
+
+function googleCalendarUrl(slot, dayLabel) {
+  const details = `Volunteer shift at the Butler County NE Democrats fair booth. Thanks for helping out!`;
   const params = new URLSearchParams({
     action: "TEMPLATE",
     text: EVENT_TITLE,
-    dates: slot.start + "/" + slot.end,
+    dates: `${slot.start}/${slot.end}`,
     details: details,
     location: EVENT_LOCATION,
   });
-  return "https://calendar.google.com/calendar/render?" + params.toString();
+  return `https://calendar.google.com/calendar/render?${params.toString()}`;
 }
+
 function icsDataUrl(slot) {
   const ics = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
     "PRODID:-//Butler County NE Democrats//Fair Signup//EN",
     "BEGIN:VEVENT",
-    "UID:" + slot.id + "-" + Date.now() + "@fair-signup",
-    "DTSTAMP:" + slot.start,
-    "DTSTART:" + slot.start,
-    "DTEND:" + slot.end,
-    "SUMMARY:" + EVENT_TITLE,
-    "LOCATION:" + EVENT_LOCATION,
+    `UID:${slot.id}-${Date.now()}@fair-signup`,
+    `DTSTAMP:${slot.start}`,
+    `DTSTART:${slot.start}`,
+    `DTEND:${slot.end}`,
+    `SUMMARY:${EVENT_TITLE}`,
+    `LOCATION:${EVENT_LOCATION}`,
     "DESCRIPTION:Volunteer shift at the Butler County NE Democrats fair booth. Thanks for helping out!",
     "END:VEVENT",
     "END:VCALENDAR",
   ].join("\r\n");
   return "data:text/calendar;charset=utf8," + encodeURIComponent(ics);
 }
+
 let signups = {};
 let justSignedUp = null;
 let saveError = null;
+
 async function loadSignups() {
   try {
-    const res = await fetch(APPS_SCRIPT_URL + "?action=list");
+    const res = await fetch(`${APPS_SCRIPT_URL}?action=list`);
     const json = await res.json();
     signups = (json && json.signups) ? json.signups : {};
   } catch (e) {
@@ -333,6 +343,7 @@ async function loadSignups() {
     saveError = "Couldn't load the current schedule — check your connection and refresh.";
   }
 }
+
 async function addSignup(slotId, name) {
   try {
     const res = await fetch(APPS_SCRIPT_URL, {
@@ -355,6 +366,7 @@ async function addSignup(slotId, name) {
     return false;
   }
 }
+
 async function removeSignupRequest(slotId, name) {
   try {
     const res = await fetch(APPS_SCRIPT_URL, {
@@ -375,41 +387,51 @@ async function removeSignupRequest(slotId, name) {
     return false;
   }
 }
+
 function render() {
   const app = document.getElementById('app');
   app.classList.remove('loading');
   app.innerHTML = '';
+
   if (saveError) {
     const banner = document.createElement('div');
     banner.className = 'error-banner';
     banner.textContent = saveError;
     app.appendChild(banner);
   }
+
   schedule.forEach(day => {
     const dayDiv = document.createElement('div');
     dayDiv.className = 'day';
+
     const titleDiv = document.createElement('div');
     titleDiv.className = 'day-title';
-    titleDiv.innerHTML = '<h2>' + day.date + '</h2>';
+    titleDiv.innerHTML = `<h2>${day.date}</h2>`;
     dayDiv.appendChild(titleDiv);
+
     day.slots.forEach(slot => {
       const names = signups[slot.id] || [];
       const isFull = names.length >= CAPACITY;
+
       const ticket = document.createElement('div');
       ticket.className = 'ticket';
+
       const main = document.createElement('div');
       main.className = 'ticket-main';
-      main.innerHTML =
-        '<div class="ticket-time">' + slot.time + '</div>' +
-        '<div class="ticket-status ' + (isFull ? 'status-full' : 'status-open') + '">' +
-        (isFull ? 'Full' : (CAPACITY - names.length) + ' spot' + (CAPACITY - names.length === 1 ? '' : 's') + ' open') +
-        '</div>';
+
+      main.innerHTML = `
+        <div class="ticket-time">${slot.time}</div>
+        <div class="ticket-status ${isFull ? 'status-full' : 'status-open'}">
+          ${isFull ? 'Full' : `${CAPACITY - names.length} spot${CAPACITY - names.length === 1 ? '' : 's'} open`}
+        </div>
+      `;
+
       const namesDiv = document.createElement('div');
       namesDiv.className = 'names';
       names.forEach((name, idx) => {
         const chip = document.createElement('div');
         chip.className = 'name-chip';
-        chip.innerHTML = '<span>' + escapeHtml(name) + '</span>';
+        chip.innerHTML = `<span>${escapeHtml(name)}</span>`;
         const removeBtn = document.createElement('button');
         removeBtn.textContent = '×';
         removeBtn.title = 'Remove';
@@ -423,6 +445,7 @@ function render() {
         namesDiv.appendChild(chip);
       });
       main.appendChild(namesDiv);
+
       if (!isFull) {
         const row = document.createElement('div');
         row.className = 'signup-row';
@@ -452,15 +475,17 @@ function render() {
         row.appendChild(btn);
         main.appendChild(row);
       }
+
       if (justSignedUp === slot.id) {
         const confirm = document.createElement('div');
         confirm.className = 'calendar-confirm';
-        confirm.innerHTML =
-          '<div class="calendar-confirm-title">You're on the schedule! Add it to your calendar:</div>' +
-          '<div class="calendar-confirm-buttons">' +
-          '<a class="cal-btn" target="_blank" rel="noopener" href="' + googleCalendarUrl(slot) + '">Google Calendar</a>' +
-          '<a class="cal-btn" download="fair-volunteer-shift.ics" href="' + icsDataUrl(slot) + '">Apple / Outlook (.ics)</a>' +
-          '</div>';
+        confirm.innerHTML = `
+          <div class="calendar-confirm-title">You're on the schedule! Add it to your calendar:</div>
+          <div class="calendar-confirm-buttons">
+            <a class="cal-btn" target="_blank" rel="noopener" href="${googleCalendarUrl(slot)}">Google Calendar</a>
+            <a class="cal-btn" download="fair-volunteer-shift.ics" href="${icsDataUrl(slot)}">Apple / Outlook (.ics)</a>
+          </div>
+        `;
         const dismiss = document.createElement('button');
         dismiss.className = 'cal-dismiss';
         dismiss.textContent = 'Done';
@@ -468,26 +493,34 @@ function render() {
         confirm.appendChild(dismiss);
         main.appendChild(confirm);
       }
+
       ticket.appendChild(main);
+
       const stub = document.createElement('div');
       stub.className = 'ticket-stub';
-      stub.innerHTML = '<span>VOLUNTEER ' + names.length + '/' + CAPACITY + '</span>';
+      stub.innerHTML = `<span>VOLUNTEER ${names.length}/${CAPACITY}</span>`;
       ticket.appendChild(stub);
+
       dayDiv.appendChild(ticket);
     });
+
     app.appendChild(dayDiv);
   });
 }
+
 function escapeHtml(str) {
   const div = document.createElement('div');
   div.textContent = str;
   return div.innerHTML;
 }
+
 async function init() {
   await loadSignups();
   render();
 }
+
 init();
 </script>
+
 </body>
 </html>
